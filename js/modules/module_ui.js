@@ -7,23 +7,7 @@ var ModuleUI =
   BOTTLES_OFFSET_Y: 40,
   BOTTLES_OFFSET_X: 20,
 
-  bottle_1_red_bg: null,
-  bottle_1_red_fill: null,
-  bottle_1_green_bg: null,
-  bottle_1_green_fill: null,
-  bottle_1_blue_bg: null,
-  bottle_1_blue_fill: null,
-  bottle_1_yellow_bg: null,
-  bottle_1_yellow_fill: null,
-
-  bottle_2_red_fill: null,
-  bottle_2_red_bg: null,
-  bottle_2_green_bg: null,
-  bottle_2_green_fill: null,
-  bottle_2_blue_bg: null,
-  bottle_2_blue_fill: null,
-  bottle_2_yellow_bg: null,
-  bottle_2_yellow_fill: null,
+  bottles: [],
 
   preload: function()
   {
@@ -64,17 +48,18 @@ var ModuleUI =
     game.add.bitmapText(game.world.width - 300, 100, 'font','Lv 1', 32);
 
     // Bottles P1
-    console.log(game.world.height - this.BOTTLES_OFFSET_Y);
-    bottle_1_red_bg = game.add.sprite(100, game.world.height - this.BOTTLES_OFFSET_Y, 'bottle_bg');
-    bottle_1_red_bg.anchor.set(0.5, 1);
-    bottle_1_red_fill = game.add.sprite(bottle_1_red_bg.position.x, bottle_1_red_bg.position.y, 'bottle_fill');
-    bottle_1_red_fill.anchor.set(0.5, 1);
+    this.bottles['red_1'] = { bg: null, fill: null};
+    this.bottles['red_1'].bg = game.add.sprite(100, game.world.height - this.BOTTLES_OFFSET_Y, 'bottle_bg');
+    this.bottles['red_1'].bg.anchor.set(0.5, 1);
+    this.bottles['red_1'].fill = game.add.sprite(100, game.world.height - this.BOTTLES_OFFSET_Y, 'bottle_fill');
+    this.bottles['red_1'].fill.anchor.set(0.5, 1);
 
     // Bottles P2
-    bottle_2_red_bg = game.add.sprite(game.world.width - 100, game.world.height - this.BOTTLES_OFFSET_Y, 'bottle_bg');
-    bottle_2_red_bg.anchor.set(0.5, 1);
-    bottle_2_red_fill = game.add.sprite(bottle_2_red_bg.position.x, bottle_2_red_bg.position.y, 'bottle_fill');
-    bottle_2_red_fill.anchor.set(0.5, 1);
+    this.bottles['red_2'] = { bg: null, fill: null};
+    this.bottles['red_2'].bg = game.add.sprite(game.world.width - 100, game.world.height - this.BOTTLES_OFFSET_Y, 'bottle_bg');
+    this.bottles['red_2'].bg.anchor.set(0.5, 1);
+    this.bottles['red_2'].fill = game.add.sprite(game.world.width - 100, game.world.height - this.BOTTLES_OFFSET_Y, 'bottle_fill');
+    this.bottles['red_2'].fill.anchor.set(0.5, 1);
   },
 
   update: function()
@@ -89,53 +74,10 @@ var ModuleUI =
   */
 
   // Set Bottle 1 level (0 - 1)
-  setBottle1RedFill(level)
+  setBottleFill(bottle, level)
   {
     level = Math.min(Math.max(level, 0), 1);
-    bottle_1_red_fill.scale.set(1, level)
-  },
-
-  setBottle1GreenFill(level)
-  {
-    level = Math.min(Math.max(level, 0), 1);
-    bottle_1_green_fill.scale.set(1, level)
-  },
-
-  setBottle1BlueFill(level)
-  {
-    level = Math.min(Math.max(level, 0), 1);
-    bottle_1_blue_fill.scale.set(1, level)
-  },
-
-  setBottle1YellowFill(level)
-  {
-    level = Math.min(Math.max(level, 0), 1);
-    bottle_1_yellow_fill.scale.set(1, level)
-  },
-
-  // Set Bottle 2 level (0 - 1)
-  setBottle2RedFill(level)
-  {
-    level = Math.min(Math.max(level, 0), 1);
-    bottle_2_red_fill.scale.set(1, level)
-  },
-
-  setBottle2GreenFill(level)
-  {
-    level = Math.min(Math.max(level, 0), 1);
-    bottle_2_green_fill.scale.set(1, level)
-  },
-
-  setBottle2BlueFill(level)
-  {
-    level = Math.min(Math.max(level, 0), 1);
-    bottle_2_blue_fill.scale.set(1, level)
-  },
-
-  setBottle2YellowFill(level)
-  {
-    level = Math.min(Math.max(level, 0), 1);
-    bottle_2_yellow_fill.scale.set(1, level)
+    this.bottles[bottle].fill.scale.set(1, level)
   },
 
   /*

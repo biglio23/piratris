@@ -12,8 +12,7 @@ var StateGame =
         ModuleGrid.create();
         ModuleUI.create();
 
-        ModuleUI.setBottle1RedFill(1);
-        ModuleUI.setBottle2RedFill(0.5);
+        ModuleUI.setBottleFill('red_1', 0.5);
     },
 
     update: function()
