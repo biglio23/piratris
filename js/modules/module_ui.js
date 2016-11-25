@@ -79,7 +79,7 @@ var ModuleUI =
 
   createBottle(bottle, x, y)
   {
-    this.bottles[bottle] = { bg: null, fill: null, tween: null};
+    this.bottles[bottle] = { bg: null, fill: null, tween: null, level: 1};
     this.bottles[bottle].bg = game.add.sprite(x, y, 'bottle_bg');
     this.bottles[bottle].bg.anchor.set(0.5, 1);
     this.bottles[bottle].fill = game.add.sprite(x, y, 'bottle_fill');
@@ -102,7 +102,9 @@ var ModuleUI =
   setBottleFill(bottle, level)
   {
     level = Math.min(Math.max(level, 0), 1);
-    this.bottles[bottle].fill.scale.set(1, level)
+    game.add.tween(this.bottles[bottle].fill.scale).to( { y: level },
+      500, Phaser.Easing.Quadratic.In, true);
+    this.bottles[bottle].level = level;
   },
 
   // p1, p2, none
