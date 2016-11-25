@@ -65,10 +65,14 @@ var ModuleUI =
     // Bottles P2
     this.createBottle('red_2', game.world.width - 100, game.world.height - this.BOTTLES_OFFSET_Y);
     this.createBottle('green_2', game.world.width - 220, game.world.height - this.BOTTLES_OFFSET_Y);
+
+    // Signals
+    StateGame.signal_new_turn.add(this.setTurn, this);
   },
 
   update: function()
   {
+
   },
 
   /*
@@ -109,7 +113,7 @@ var ModuleUI =
 
   // p1, p2, none
   setTurn(player)
-  {
+  {console.log(player);
     if (player === 'p1')
     {
       this.p2_tween.stop();
