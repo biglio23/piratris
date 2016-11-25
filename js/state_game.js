@@ -13,9 +13,11 @@ var StateGame =
         ModuleUI.create();
 
         ModuleUI.setBottleFill('red_1', 0.5);
+        ModuleUI.setTurn('none');
     },
 
     update: function()
     {
+      ModuleUI.update();
     }
 }

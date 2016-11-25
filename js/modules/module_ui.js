@@ -4,6 +4,9 @@ var ModuleUI =
   p1_pic: null,
   p2_pic: null,
 
+  p1_tween: null,
+  p2_tween: null,
+
   BOTTLES_OFFSET_Y: 40,
   BOTTLES_OFFSET_X: 20,
 
@@ -25,20 +28,28 @@ var ModuleUI =
   {
     // Players pics
     var bmd = game.make.bitmapData(128, 128);
-    this.p1_pic = game.add.sprite(0, 0, 'p1_pic');
-    this.p1_pic.width = 128;
-    this.p1_pic.height = 128;
-    bmd.alphaMask(this.p1_pic, 'circle_mask');
-    game.add.image(72, 150, bmd).anchor.set(0.5, 1);
-    this.p1_pic.visible = false;
+    var p1_pic = game.add.sprite(0, 0, 'p1_pic');
+    p1_pic.width = 128;
+    p1_pic.height = 128;
+    bmd.alphaMask(p1_pic, 'circle_mask');
+    this.pic_1 = game.add.image(72, 150, bmd);
+    this.pic_1.anchor.set(0.5, 1);
+    p1_pic.visible = false;
 
     bmd = game.make.bitmapData(128, 128);
-    this.p2_pic = game.add.sprite(0, 0, 'p2_pic')
-    this.p2_pic.width = 128;
-    this.p2_pic.height = 128;
-    bmd.alphaMask(this.p2_pic, 'circle_mask');
-    game.add.image(game.world.width - 72, 150, bmd).anchor.set(0.5, 1);
-    this.p2_pic.visible = false;
+    var p2_pic = game.add.sprite(0, 0, 'p2_pic')
+    p2_pic.width = 128;
+    p2_pic.height = 128;
+    bmd.alphaMask(p2_pic, 'circle_mask');
+    this.pic_2 = game.add.image(game.world.width - 72, 150, bmd);
+    this.pic_2.anchor.set(0.5, 1);
+    p2_pic.visible = false;
+
+    // Tweens
+    this.p1_tween = game.add.tween(this.pic_1).to( { width: 140, height: 140 },
+      500, 'Linear', false, 0, -1, true);
+    this.p2_tween = game.add.tween(this.pic_2).to( { width: 140, height: 140 },
+      500, 'Linear', false, 0, -1, true);
 
     // Name - Level
     game.add.bitmapText(150, 30, 'font','God', 64);
@@ -48,24 +59,38 @@ var ModuleUI =
     game.add.bitmapText(game.world.width - 300, 100, 'font','Lv 1', 32);
 
     // Bottles P1
-    this.bottles['red_1'] = { bg: null, fill: null};
-    this.bottles['red_1'].bg = game.add.sprite(100, game.world.height - this.BOTTLES_OFFSET_Y, 'bottle_bg');
-    this.bottles['red_1'].bg.anchor.set(0.5, 1);
-    this.bottles['red_1'].fill = game.add.sprite(100, game.world.height - this.BOTTLES_OFFSET_Y, 'bottle_fill');
-    this.bottles['red_1'].fill.anchor.set(0.5, 1);
+    this.createBottle('red_1', 100, game.world.height - this.BOTTLES_OFFSET_Y);
+    this.createBottle('green_1', 220, game.world.height - this.BOTTLES_OFFSET_Y);
 
     // Bottles P2
-    this.bottles['red_2'] = { bg: null, fill: null};
-    this.bottles['red_2'].bg = game.add.sprite(game.world.width - 100, game.world.height - this.BOTTLES_OFFSET_Y, 'bottle_bg');
-    this.bottles['red_2'].bg.anchor.set(0.5, 1);
-    this.bottles['red_2'].fill = game.add.sprite(game.world.width - 100, game.world.height - this.BOTTLES_OFFSET_Y, 'bottle_fill');
-    this.bottles['red_2'].fill.anchor.set(0.5, 1);
+    this.createBottle('red_2', game.world.width - 100, game.world.height - this.BOTTLES_OFFSET_Y);
+    this.createBottle('green_2', game.world.width - 220, game.world.height - this.BOTTLES_OFFSET_Y);
   },
 
   update: function()
   {
-
   },
+
+  /*
+  ###############
+  #   PRIVATE   #
+  ###############
+  */
+
+  createBottle(bottle, x, y)
+  {
+    this.bottles[bottle] = { bg: null, fill: null, tween: null};
+    this.bottles[bottle].bg = game.add.sprite(x, y, 'bottle_bg');
+    this.bottles[bottle].bg.anchor.set(0.5, 1);
+    this.bottles[bottle].fill = game.add.sprite(x, y, 'bottle_fill');
+    this.bottles[bottle].fill.anchor.set(0.5, 1);
+  },
+
+  /*
+  ###########
+  #   END   #
+  ###########
+  */
 
   /*
   ###########
@@ -78,6 +103,26 @@ var ModuleUI =
   {
     level = Math.min(Math.max(level, 0), 1);
     this.bottles[bottle].fill.scale.set(1, level)
+  },
+
+  // p1, p2, none
+  setTurn(player)
+  {
+    if (player === 'p1')
+    {
+      this.p2_tween.stop();
+      this.p1_tween.start();
+    }
+    else if (player == 'p2')
+    {
+      this.p1_tween.stop();
+      this.p2_tween.start();
+    }
+    else if (player === 'none')
+    {
+      this.p1_tween.stop();
+      this.p2_tween.stop();
+    }
   },
 
   /*
