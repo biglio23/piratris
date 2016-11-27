@@ -2,10 +2,11 @@
 var game = new Phaser.Game(800, 1200, Phaser.CANVAS, 'piratris');
 
 // Game States
+game.state.add('state_menu', StateMenu);
 game.state.add('state_game', StateGame);
 
 // Init State
-game.state.start('state_game');
+game.state.start('state_menu');
 
 var PADDING_TOP = 300;
 var GEM_SIZE = 128;
