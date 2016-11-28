@@ -9,6 +9,7 @@ game.state.add('state_game', StateGame);
 game.state.start('state_menu');
 
 var PADDING_TOP = 300;
+var PADDING_LEFT = 5;
 var GEM_SIZE = 128;
 var GEM_SPACING = 4;
 var GEM_SIZE_SPACED = GEM_SIZE + GEM_SPACING;

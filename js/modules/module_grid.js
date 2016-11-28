@@ -1,5 +1,6 @@
 //-----------------------------------GRID MODULE-----------------------------------\\
 var selectedItems = new Set();
+
 var ModuleGrid =
 {
     // Array of String used for randomization of the sprites
@@ -203,11 +204,17 @@ function selectItem(item) {
 function releaseItem() {
     if (selectedItems.size >= MATCH_MIN) {
         allowInput = false;
+        cellType = "";
         for (var item of selectedItems.values()) {
             item.kill();
             setItemPos(item, -1, -1);
+            cellType = item.cellType;
         }
         var dropGemDuration = dropItems();
+
+        // notify new match
+        StateGame.newMatch(cellType, selectedItems.size);
+
         // delay board refilling until all existing gems have dropped down
         game.time.events.add(dropGemDuration * 100, refillBoard);
     } else {
@@ -282,7 +289,7 @@ function spawnBoard() {
     for (var i = 0; i < BOARD_COLS; i++) {
         for (var j = 0; j < BOARD_ROWS; j++) {
             var texture = sprites[game.rnd.integerInRange(0, sprites.length - 1)];
-            var item = items.create(i * GEM_SIZE_SPACED, (j * GEM_SIZE_SPACED) + PADDING_TOP, texture);
+            var item = items.create((i * GEM_SIZE_SPACED) + PADDING_LEFT, (j * GEM_SIZE_SPACED) + PADDING_TOP, texture);
             item.name = 'item' + i.toString() + 'x' + j.toString();
             item.inputEnabled = true;
             item.cellType = texture;
@@ -322,6 +329,7 @@ function refillBoard() {
     }
 
     game.time.events.add(maxItemsMissingFromCol * 2 * 100, boardRefilled);
+    StateGame.switchPlayer()
 }
 
 

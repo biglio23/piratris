@@ -4,6 +4,9 @@ var StateGame =
     signal_match: null,
     signal_new_turn: null,
 
+    // Turn
+    current_player: "p1",
+
     preload: function()
     {
         game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
@@ -20,12 +23,30 @@ var StateGame =
       ModuleGrid.create();
       ModuleUI.create();
 
-      // Test Signal
-      this.signal_new_turn.dispatch('p1');
+      // First Signal
+      this.signal_new_turn.dispatch(current_player);
     },
 
     update: function()
     {
       ModuleUI.update();
+    },
+
+    switchPlayer: function()
+    {
+      if(this.current_player === "p1")
+      {
+        this.current_player = "p2";
+      }
+      else
+      {
+        this.current_player = "p1";
+      }
+      this.signal_new_turn.dispatch(this.current_player);
+    },
+
+    newMatch: function(type, count)
+    {
+      this.signal_match.dispatch(type, count);
     }
 }

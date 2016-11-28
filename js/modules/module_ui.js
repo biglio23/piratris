@@ -52,10 +52,10 @@ var ModuleUI =
       500, 'Linear', false, 0, -1, true);
 
     // Name - Level
-    game.add.bitmapText(150, 30, 'font','God', 64);
+    game.add.bitmapText(150, 30, 'font','Buon', 64);
     game.add.bitmapText(150, 100, 'font','Lv 1000', 32);
 
-    game.add.bitmapText(game.world.width - 300, 30, 'font','Pippa', 64);
+    game.add.bitmapText(game.world.width - 300, 30, 'font','Natale', 64);
     game.add.bitmapText(game.world.width - 300, 100, 'font','Lv 1', 32);
 
     // Bottles P1
@@ -68,6 +68,7 @@ var ModuleUI =
 
     // Signals
     StateGame.signal_new_turn.add(this.setTurn, this);
+    StateGame.signal_match.add(this.onMatch, this);
   },
 
   update: function()
@@ -90,6 +91,33 @@ var ModuleUI =
     this.bottles[bottle].fill.anchor.set(0.5, 1);
   },
 
+  // p1, p2, none
+  setTurn(player)
+  {console.log(player);
+    if (player === 'p1')
+    {
+      this.p2_tween.stop();
+      this.p1_tween.start();
+    }
+    else if (player == 'p2')
+    {
+      this.p1_tween.stop();
+      this.p2_tween.start();
+    }
+    else if (player === 'none')
+    {
+      this.p1_tween.stop();
+      this.p2_tween.stop();
+    }
+  },
+
+  onMatch(cellType, count)
+  {
+    console.log(cellType, count);
+    this.setBottleFill("red_1", 0.3);
+  },
+
+
   /*
   ###########
   #   END   #
@@ -111,25 +139,6 @@ var ModuleUI =
     this.bottles[bottle].level = level;
   },
 
-  // p1, p2, none
-  setTurn(player)
-  {console.log(player);
-    if (player === 'p1')
-    {
-      this.p2_tween.stop();
-      this.p1_tween.start();
-    }
-    else if (player == 'p2')
-    {
-      this.p1_tween.stop();
-      this.p2_tween.start();
-    }
-    else if (player === 'none')
-    {
-      this.p1_tween.stop();
-      this.p2_tween.stop();
-    }
-  },
 
   /*
   ###########
