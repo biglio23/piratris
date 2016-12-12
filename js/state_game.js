@@ -5,7 +5,7 @@ var StateGame =
     signal_new_turn: null,
 
     // Turn
-    current_player: "p1",
+    current_player: null,
 
     preload: function()
     {
@@ -16,6 +16,8 @@ var StateGame =
 
     create: function()
     {
+      this.current_player = "p1";
+
       // Init Signals
       this.signal_match = new Phaser.Signal();
       this.signal_new_turn = new Phaser.Signal();
@@ -24,7 +26,7 @@ var StateGame =
       ModuleUI.create();
 
       // First Signal
-      this.signal_new_turn.dispatch(current_player);
+      this.signal_new_turn.dispatch(this.current_player);
     },
 
     update: function()
@@ -43,6 +45,7 @@ var StateGame =
         this.current_player = "p1";
       }
       this.signal_new_turn.dispatch(this.current_player);
+      console.log(this.current_player);
     },
 
     newMatch: function(type, count)

@@ -17,8 +17,10 @@ var ModuleUI =
     game.load.image('circle_mask', 'assets/circle_mask.png');
     game.load.image('p1_pic', 'assets/p1_pic.jpg');
     game.load.image('p2_pic', 'assets/p2_pic.jpg');
-    game.load.image('bottle_bg', 'assets/bottle_bg.png');
-    game.load.image('bottle_fill', 'assets/bottle_fill.png');
+    game.load.image('bottle_bg', 'assets/sprites/bottle_bg.png');
+    game.load.image('bottle_fill_red', 'assets/sprites/bottle_fill_red.png')
+    game.load.image('bottle_fill_yellow', 'assets/sprites/bottle_fill_yellow.png')
+    game.load.image('bottle_fill_green', 'assets/sprites/bottle_fill_green.png')
 
     game.load.bitmapFont('font', 'assets/fonts/font.png',
     'assets/fonts/font.fnt');
@@ -59,15 +61,15 @@ var ModuleUI =
     game.add.bitmapText(game.world.width - 300, 100, 'font','Lv 1', 32);
 
     // Bottles P1
-    this.createBottle('red_1', 100, game.world.height - this.BOTTLES_OFFSET_Y);
-    this.createBottle('green_1', 220, game.world.height - this.BOTTLES_OFFSET_Y);
+    this.createBottle('red_1', 100, game.world.height - this.BOTTLES_OFFSET_Y, 'bottle_fill_red');
+    this.createBottle('green_1', 220, game.world.height - this.BOTTLES_OFFSET_Y, 'bottle_fill_green');
 
     // Bottles P2
-    this.createBottle('red_2', game.world.width - 100, game.world.height - this.BOTTLES_OFFSET_Y);
-    this.createBottle('green_2', game.world.width - 220, game.world.height - this.BOTTLES_OFFSET_Y);
+    this.createBottle('red_2', game.world.width - 100, game.world.height - this.BOTTLES_OFFSET_Y, 'bottle_fill_red');
+    this.createBottle('green_2', game.world.width - 220, game.world.height - this.BOTTLES_OFFSET_Y, 'bottle_fill_green');
 
     // Signals
-    StateGame.signal_new_turn.add(this.setTurn, this);
+    StateGame.signal_new_turn.add(this.onNewTurn, this);
     StateGame.signal_match.add(this.onMatch, this);
   },
 
@@ -82,18 +84,40 @@ var ModuleUI =
   ###############
   */
 
-  createBottle(bottle, x, y)
+	createBottle: function(bottle, x, y, sprite)
   {
     this.bottles[bottle] = { bg: null, fill: null, tween: null, level: 1};
+    this.bottles[bottle].fill = game.add.sprite(x, y, sprite);
+    this.bottles[bottle].fill.anchor.set(0.5, 1);
     this.bottles[bottle].bg = game.add.sprite(x, y, 'bottle_bg');
     this.bottles[bottle].bg.anchor.set(0.5, 1);
-    this.bottles[bottle].fill = game.add.sprite(x, y, 'bottle_fill');
-    this.bottles[bottle].fill.anchor.set(0.5, 1);
   },
 
+  // Set Bottle 1 level (0 - 1)
+  setBottleFill: function(bottle, level)
+  {
+    level = Math.min(Math.max(level, 0), 1);
+    game.add.tween(this.bottles[bottle].fill.scale).to( { y: level },
+      500, Phaser.Easing.Quadratic.In, true);
+    this.bottles[bottle].level = level;
+  },
+
+
+  /*
+  ###########
+  #   END   #
+  ###########
+  */
+
+  /*
+  ##############
+  #   EVENTS   #
+  ##############
+  */
+
   // p1, p2, none
-  setTurn(player)
-  {console.log(player);
+  onNewTurn: function(player)
+  {
     if (player === 'p1')
     {
       this.p2_tween.stop();
@@ -111,34 +135,11 @@ var ModuleUI =
     }
   },
 
-  onMatch(cellType, count)
+  onMatch: function(cellType, count)
   {
     console.log(cellType, count);
     this.setBottleFill("red_1", 0.3);
   },
-
-
-  /*
-  ###########
-  #   END   #
-  ###########
-  */
-
-  /*
-  ###########
-  #   API   #
-  ###########
-  */
-
-  // Set Bottle 1 level (0 - 1)
-  setBottleFill(bottle, level)
-  {
-    level = Math.min(Math.max(level, 0), 1);
-    game.add.tween(this.bottles[bottle].fill.scale).to( { y: level },
-      500, Phaser.Easing.Quadratic.In, true);
-    this.bottles[bottle].level = level;
-  },
-
 
   /*
   ###########

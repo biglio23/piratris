@@ -1,5 +1,7 @@
 var StateMenu =
 {
+  bg: null,
+  logo: null,
   button_play: null,
   button_hotseat: null,
 
@@ -8,11 +10,20 @@ var StateMenu =
     game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
     game.load.image('button_play', 'assets/button_play.png');
     game.load.image('button_hotseat', 'assets/button_hotseat.png');
+    game.load.image('main_menu_bg', 'assets/sprites/main_menu_bg.png')
+    game.load.image('main_menu_logo', 'assets/sprites/main_menu_logo.png');
   },
 
   create: function()
   {
-    game.stage.backgroundColor = '#3b85ba';
+    bg = game.add.sprite(0, 0, 'main_menu_bg');
+    bg.anchor.setTo(0.5, 0.5);
+    bg.position.x = game.world.centerX;
+    bg.position.y = game.world.centerY;
+    logo = game.add.sprite(0, 0, 'main_menu_logo');
+    logo.anchor.setTo(0.5, 0.5);
+    logo.position.x = game.world.centerX;
+    logo.position.y = game.world.centerY;
 
     button_play = game.add.button(game.world.centerX, 500, 'button_play', function()
     {
